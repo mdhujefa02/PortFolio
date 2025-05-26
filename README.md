@@ -2,7 +2,7 @@
 Welcome to my personal developer portfolio! This website showcases the projects I’ve built as a Full Stack Java Developer, along with visuals, code structure, and interactive features.
 
 # 🌐 Live Demo
-You can view the portfolio by opening index.html in a browser.
+You can view the portfolio by opening https://visionary-jalebi-c7e91c.netlify.app/ in a browser.
 
 # 📸 Screenshots
 Project	Preview
@@ -20,7 +20,7 @@ Backend: Core Java, J2EE, JSP, Servlets, Spring Boot
 
 Frontend: HTML, CSS, JavaScript
 
-Database: SQL, JDBC, JPA
+Database: SQL, JDBC, JPA, Hibernate, NoSQL
 
 Tools: GitHub, VS Code, Eclipse, Postman
 
@@ -46,6 +46,6 @@ profilephoto.jpg – Your profile image
 📫 Contact
 LinkedIn: Hujefa Saudagar
 
-Email: your.email@example.com
+Email: md.hujefa123@gmail.com
 
 GitHub: mdhujefa02
