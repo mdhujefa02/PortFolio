@@ -29,7 +29,7 @@ HTML5
 
 CSS3
 
-JavaScript (Vanilla JS)
+JavaScript
 
 # 📁 Project Files
 index.html – Main portfolio page
