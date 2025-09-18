@@ -8,14 +8,492 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="styles.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --accent-color: #f093fb;
+            --dark-color: #2c3e50;
+            --light-color: #ecf0f1;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Loading animation */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .loader.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader-content {
+            text-align: center;
+            color: white;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Enhanced Navigation */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .navbar-nav .nav-link {
+            color: var(--dark-color) !important;
+            font-weight: 500;
+            margin: 0 10px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: var(--primary-color) !important;
+        }
+
+        .navbar-nav .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 50%;
+            background: var(--gradient-primary);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .navbar-nav .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Animated Background */
+        .animated-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .shape {
+            position: absolute;
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .shape:nth-child(1) {
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            top: 60%;
+            left: 80%;
+            animation-delay: 2s;
+        }
+
+        .shape:nth-child(3) {
+            top: 80%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        /* Hero Section */
+        .hero-section {
+            min-height: 100vh;
+            background: var(--gradient-primary);
+            position: relative;
+            color: white;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            animation: slideInUp 1s ease-out;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+            animation: slideInUp 1s ease-out 0.2s both;
+        }
+
+        .hero-description {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            animation: slideInUp 1s ease-out 0.4s both;
+        }
+
+        .hero-buttons {
+            animation: slideInUp 1s ease-out 0.6s both;
+        }
+
+        .profile-img {
+            width: 400px;
+            height: 500px;
+            object-fit: cover;
+            border: 5px solid rgba(255,255,255,0.2);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            animation: fadeInRight 1s ease-out 0.8s both;
+            transition: transform 0.3s ease;
+        }
+
+        .profile-img:hover {
+            transform: scale(1.05) rotate(5deg);
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Enhanced Buttons */
+        .btn-gradient {
+            background: var(--gradient-secondary);
+            border: none;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-gradient::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-gradient:hover::before {
+            left: 100%;
+        }
+
+        .btn-gradient:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .btn-outline-gradient {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+            padding: 10px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-gradient:hover {
+            background: white;
+            color: var(--primary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        /* Enhanced Cards */
+        .enhanced-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border: none;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .enhanced-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+
+        .enhanced-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .enhanced-card:hover .card-img-top {
+            transform: scale(1.1);
+        }
+
+        /* Skills Section */
+        .skills-section {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+
+        .skill-item {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .skill-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+        .skill-icon {
+            font-size: 2.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+
+        /* Progress Bars */
+        .progress-bar-animated {
+            background: var(--gradient-primary);
+            animation: progressAnimation 2s ease-in-out;
+        }
+
+        @keyframes progressAnimation {
+            from { width: 0; }
+        }
+
+        /* Section Titles */
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+        }
+
+        /* Contact Form */
+        .contact-form {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        .form-control {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 12px 15px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--gradient-primary);
+            color: white;
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        /* Scroll to top button */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .scroll-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .profile-img {
+                width: 250px;
+                height: 250px;
+            }
+        }
+
+        /* Typing Animation */
+        .typing-animation {
+            border-right: 2px solid white;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { border-color: white; }
+            51%, 100% { border-color: transparent; }
+        }
+    </style>
 </head>
 <body data-bs-spy="scroll" data-bs-target="#navbar">
+    <!-- Loading Screen -->
+    <div class="loader" id="loader">
+        <div class="loader-content">
+            <div class="spinner"></div>
+            <h4>Loading Portfolio...</h4>
+        </div>
+    </div>
+
     <!-- Navigation -->
-    <nav id="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <nav id="navbar" class="navbar navbar-expand-lg fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="#">Hujefa Saudagar</a>
+            <a class="navbar-brand" href="#" data-aos="fade-right">Hujefa Saudagar</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -46,53 +524,71 @@
 
     <!-- Hero Section -->
     <section id="home" class="hero-section d-flex align-items-center">
-        <div class="container">
+        <div class="animated-bg">
+            <div class="floating-shapes">
+                <div class="shape">
+                    <i class="fas fa-code" style="font-size: 3rem; color: rgba(255,255,255,0.1);"></i>
+                </div>
+                <div class="shape">
+                    <i class="fas fa-laptop-code" style="font-size: 2.5rem; color: rgba(255,255,255,0.1);"></i>
+                </div>
+                <div class="shape">
+                    <i class="fas fa-database" style="font-size: 2rem; color: rgba(255,255,255,0.1);"></i>
+                </div>
+            </div>
+        </div>
+        <div class="container hero-content">
             <div class="row align-items-center">
                 <div class="col-lg-6">
-                    <h1 class="display-4 fw-bold">Hujefa Saudagar</h1>
-                    <h2 class="text-primary">Full Stack Java Developer with AI-ML</h2>
-                    <p class="lead mt-3">Dynamic and detail-oriented developer with expertise in end-to-end project development and problem-solving.</p>
-                    <div class="mt-4">
-                        <a href="#contact" class="btn btn-primary btn-lg me-2">Contact Me</a>
-                        <a href="#projects" class="btn btn-outline-light btn-lg">View Projects</a>
+                    <h1 class="hero-title">Hujefa Saudagar</h1>
+                    <h2 class="hero-subtitle">Full Stack Java Developer <span class="typing-animation">with AI-ML</span></h2>
+                    <p class="hero-description">Dynamic and detail-oriented developer with expertise in end-to-end project development and problem-solving.</p>
+                    <div class="hero-buttons">
+                        <a href="#contact" class="btn btn-gradient me-3">Contact Me</a>
+                        <a href="#projects" class="btn btn-outline-gradient">View Projects</a>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                    <img src="profilephoto.jpg" alt="Hujefa Saudagar" class="img-fluid rounded-circle d-block mx-auto profile-img">
+                <div class="col-lg-6 text-center">
+                    <img src="images/profilephoto.jpg" alt="Hujefa Saudagar" class="profile-img rounded-circle">
                 </div>
             </div>
         </div>
     </section>
 
     <!-- About Section -->
-    <section id="about" class="py-5 bg-light">
+    <section id="about" class="py-5">
         <div class="container">
-            <h2 class="text-center mb-5">Profile Summary</h2>
+            <h2 class="section-title" data-aos="fade-up">Profile Summary</h2>
             <div class="row">
                 <div class="col-lg-8 mx-auto">
-                    <p class="lead text-center">Dynamic and detail-oriented Full Stack Java Developer with AI-ML, problem-solving, and end-to-end project development experience.</p>
-                    <p>Proficient in Java, JSP, Servlet, and SQL, with a good academic background in Electronic & Communication Engineering. Adapt at delivering high-quality software solutions and passionate about leveraging technology to solve complex challenges.</p>
-                    <p>Key strengths include adaptability, collaboration, and a keen interest in emerging technologies.</p>
-                    
-                    <div class="row mt-4">
-                        <div class="col-md-6">
-                            <h4>Core Competencies:</h4>
-                            <ul>
-                                <li>Core Java</li>
-                                <li>J2EE</li>
-                                <li>OOPs</li>
-                                <li>Spring Framework</li>
-                                <li>Hibernate</li>
-                                <li>Angular</li>
-                            </ul>
-                        </div>
-                        <div class="col-md-6">
-                            <h4>Soft Skills:</h4>
-                            <div class="soft-skills">
-                                <span class="badge bg-primary">Ambition</span>
-                                <span class="badge bg-success">Collaboration</span>
-                                <span class="badge bg-info">Leadership</span>
-                                <span class="badge bg-warning">Adaptability</span>
+                    <div class="enhanced-card" data-aos="fade-up" data-aos-delay="100">
+                        <div class="card-body p-5">
+                            <p class="lead text-center mb-4">Dynamic and detail-oriented Full Stack Java Developer with AI-ML, problem-solving, and end-to-end project development experience.</p>
+                            <p class="mb-4">Proficient in Java, JSP, Servlet, and SQL, with a good academic background in Electronic & Communication Engineering. Adapt at delivering high-quality software solutions and passionate about leveraging technology to solve complex challenges.</p>
+                            <p class="mb-4">Key strengths include adaptability, collaboration, and a keen interest in emerging technologies.</p>
+                            
+                            <div class="row mt-4">
+                                <div class="col-md-6" data-aos="fade-right" data-aos-delay="200">
+                                    <h4 class="mb-3">Core Competencies:</h4>
+                                    <ul class="list-unstyled">
+                                        <li><i class="fas fa-check-circle text-success me-2"></i>Core Java</li>
+                                        <li><i class="fas fa-check-circle text-success me-2"></i>J2EE</li>
+                                        <li><i class="fas fa-check-circle text-success me-2"></i>OOPs</li>
+                                        <li><i class="fas fa-check-circle text-success me-2"></i>Spring Framework</li>
+                                        <li><i class="fas fa-check-circle text-success me-2"></i>Hibernate</li>
+                                        <li><i class="fas fa-check-circle text-success me-2"></i>Angular</li>
+                                        <li><i class="fas fa-check-circle text-success me-2"></i>React</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6" data-aos="fade-left" data-aos-delay="300">
+                                    <h4 class="mb-3">Soft Skills:</h4>
+                                    <div class="soft-skills">
+                                        <span class="badge bg-primary mb-2 me-2 p-2">Ambition</span>
+                                        <span class="badge bg-success mb-2 me-2 p-2">Collaboration</span>
+                                        <span class="badge bg-info mb-2 me-2 p-2">Leadership</span>
+                                        <span class="badge bg-warning mb-2 me-2 p-2">Adaptability</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -102,53 +598,54 @@
     </section>
 
     <!-- Skills Section -->
-    <section id="skills" class="py-5">
+    <section id="skills" class="py-5 skills-section">
         <div class="container">
-            <h2 class="text-center mb-5">Technical Skills</h2>
+            <h2 class="section-title" data-aos="fade-up">Technical Skills</h2>
             <div class="row">
-                <div class="col-md-4">
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h5 class="card-title">Programming Languages</h5>
-                            <ul class="list-unstyled">
-                                <li>C/C++</li>
-                                <li>Java</li>
-                                <li>JavaScript</li>
-                              <!--<li>Python</li>-->  
-                                <li>HTML</li>
-                            </ul>
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="skill-item">
+                        <div class="skill-icon">
+                            <i class="fas fa-code"></i>
                         </div>
+                        <h5 class="mb-3">Programming Languages</h5>
+                        <ul class="list-unstyled">
+                            <li class="mb-2">C/C++</li>
+                            <li class="mb-2">Java</li>
+                            <li class="mb-2">JavaScript</li>
+                            <li class="mb-2">HTML</li>
+                        </ul>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h5 class="card-title">Frameworks & Libraries</h5>
-                            <ul class="list-unstyled">
-                                <li>Spring</li>
-                                <li>Spring Boot</li>
-                               <!-- <li>Angular</li>
-                                <li>React JS</li> -->
-                                <li>CSS</li>
-                                <li>Bootstrap</li>
-                                <li>Hibernate</li>
-                            </ul>
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="skill-item">
+                        <div class="skill-icon">
+                            <i class="fas fa-layer-group"></i>
                         </div>
+                        <h5 class="mb-3">Frameworks & Libraries</h5>
+                        <ul class="list-unstyled">
+                            <li class="mb-2">Spring</li>
+                            <li class="mb-2">Spring Boot</li>
+                            <li class="mb-2">Angular</li>
+                            <li class="mb-2">React</li>
+                            <li class="mb-2">CSS</li>
+                            <li class="mb-2">Bootstrap</li>
+                            <li class="mb-2">Hibernate</li>
+                        </ul>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h5 class="card-title">Tools & Databases</h5>
-                            <ul class="list-unstyled">
-                                <li>SQL</li>
-                                <li>NoSQL</li>
-                                <li>Git</li>
-                                <li>GitHub</li>
-                                <li>MS Word</li>
-                                <li>MS Excel</li>
-                            </ul>
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                    <div class="skill-item">
+                        <div class="skill-icon">
+                            <i class="fas fa-tools"></i>
                         </div>
+                        <h5 class="mb-3">Tools & Databases</h5>
+                        <ul class="list-unstyled">
+                            <li class="mb-2">SQL</li>
+                            <li class="mb-2">NoSQL</li>
+                            <li class="mb-2">Git</li>
+                            <li class="mb-2">GitHub</li>
+                            <li class="mb-2">MS Office</li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -156,141 +653,95 @@
     </section>
 
     <!-- Projects Section -->
-    <section id="projects" class="py-5 bg-light">
+    <section id="projects" class="py-5">
         <div class="container">
-            <h2 class="text-center mb-5">Projects</h2>
+            <h2 class="section-title" data-aos="fade-up">Projects</h2>
+            <!--Banking Web App-->
             <div class="row">
-              
+                 <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="enhanced-card h-100">
+                        <img src="bank.png" class="card-img-top" alt="Bank Web App">
+                        <div class="card-body">
+                            <h5 class="card-title">Banking Web App</h5>
+                            <p class="card-text">Built a full-stack online banking system using Angular and Spring Boot to simulate digital banking operations.</p>
+                            <p><strong>Technologies:</strong> Java, Spring Boot, Angular, SQL</p>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <a href="https://github.com/mdhujefa02/Banking-Web-App" target="_blank" class="btn btn-gradient w-100">View on GitHub</a>
+                        </div>
+                    </div>
+                </div>
                 <!-- Spring Boot Weather App -->
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="card h-100">
+                <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="enhanced-card h-100">
                         <img src="Weather.png" class="card-img-top" alt="Spring Boot Weather App">
                         <div class="card-body">
                             <h5 class="card-title">Spring Boot Weather App</h5>
                             <p class="card-text">Weather application built with Spring Boot that displays current weather conditions and forecasts.</p>
                             <p><strong>Technologies:</strong> Java, Spring Boot, HTML, CSS</p>
                         </div>
-                        <div class="card-footer">
-                            <a href="https://github.com/mdhujefa02/SpringBoot-Weather-App" target="_blank" class="btn btn-primary">View on GitHub</a>
+                        <div class="card-footer bg-transparent">
+                            <a href="https://github.com/mdhujefa02/SpringBoot-Weather-App" target="_blank" class="btn btn-gradient w-100">View on GitHub</a>
                         </div>
                     </div>
                 </div>
                 
                 <!-- Weather App -->
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="card h-100">
+                <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="enhanced-card h-100">
                         <img src="Weather1.png" class="card-img-top" alt="Weather App">
                         <div class="card-body">
                             <h5 class="card-title">Weather Web App</h5>
                             <p class="card-text">Developed an interactive weather forecasting application using HTML, CSS, JSP, and Servlet.</p>
                             <p><strong>Technologies:</strong> HTML, CSS, JavaScript, JSP, Java, Servlets, Open Weather Map's API</p>
                         </div>
-                        <div class="card-footer">
-                            <a href="https://github.com/mdhujefa02/Weather_App" target="_blank" class="btn btn-primary">View on GitHub</a>
+                        <div class="card-footer bg-transparent">
+                            <a href="https://github.com/mdhujefa02/Weather_App" target="_blank" class="btn btn-gradient w-100">View on GitHub</a>
                         </div>
                     </div>
                 </div>
+
                 <!-- QR Code Scanner -->
-<div class="col-lg-4 col-md-6 mb-4">
-    <div class="card h-100">
-        <img src="QRScannerApp.png" class="card-img-top" alt="QR Code Scanner Project">
-        <div class="card-body">
-            <h5 class="card-title">QR Code Scanner</h5>
-            <p class="card-text">A Spring Boot web application to scan and decode QR codes, with a user-friendly interface for uploading images or using a webcam.</p>
-            <p><strong>Technologies:</strong> Java, Spring Boot, ZXing Library</p>
-        </div>
-        <div class="card-footer">
-            <a href="https://github.com/mdhujefa02/QR-code-Generator" target="_blank" class="btn btn-primary">View on GitHub</a>
-        </div>
-    </div>
-</div>
+                <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="300">
+                    <div class="enhanced-card h-100">
+                        <img src="QRScannerApp.png" class="card-img-top" alt="QR Code Scanner Project">
+                        <div class="card-body">
+                            <h5 class="card-title">QR Code Scanner</h5>
+                            <p class="card-text">A Spring Boot web application to scan and decode QR codes, with a user-friendly interface for uploading images or using a webcam.</p>
+                            <p><strong>Technologies:</strong> Java, Spring Boot, ZXing Library</p>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <a href="https://github.com/mdhujefa02/QR-code-Generator" target="_blank" class="btn btn-gradient w-100">View on GitHub</a>
+                        </div>
+                    </div>
+                </div>
 
-<!-- Twitter Web App -->
-<div class="col-lg-4 col-md-6 mb-4">
-    <div class="card h-100">
-        <img src="TwitterWebApp.png" class="card-img-top" alt="Twitter Web App">
-        <div class="card-body">
-            <h5 class="card-title">Twitter Web App Clone</h5>
-            <p class="card-text">A Twitter-like social media platform built with Spring Boot. Includes user registration, login, post creation, likes, and a timeline feed.</p>
-            <p><strong>Technologies:</strong> Java, Spring Boot, Thymeleaf, MySQL</p>
-        </div>
-        <div class="card-footer">
-            <a href="https://github.com/mdhujefa02/Twitter_App" target="_blank" class="btn btn-primary">View on GitHub</a>
-        </div>
-    </div>
-</div>
+                <!-- Twitter Web App -->
+                <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="400">
+                    <div class="enhanced-card h-100">
+                        <img src="TwitterWebApp.png" class="card-img-top" alt="Twitter Web App">
+                        <div class="card-body">
+                            <h5 class="card-title">Twitter Web App Clone</h5>
+                            <p class="card-text">A Twitter-like social media platform built with Spring Boot. Includes user registration, login, post creation, likes, and a timeline feed.</p>
+                            <p><strong>Technologies:</strong> Java, Spring Boot, Thymeleaf, MySQL</p>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <a href="https://github.com/mdhujefa02/Twitter_App" target="_blank" class="btn btn-gradient w-100">View on GitHub</a>
+                        </div>
+                    </div>
+                </div>
 
- <!-- Login System Using Hibernate -->
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="card h-100">
+                <!-- Login System Using Hibernate -->
+                <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="500">
+                    <div class="enhanced-card h-100">
                         <img src="LoginWebApp.png" class="card-img-top" alt="Login System">
                         <div class="card-body">
                             <h5 class="card-title">Login and Registration System using Hibernate</h5>
                             <p class="card-text">A robust login & registration system with servlet-based architecture to handle user requests.</p>
                             <p><strong>Technologies:</strong> HTML, CSS, JSP, Servlet, SQL, Hibernate, Java</p>
                         </div>
-                        <div class="card-footer">
-                            <a href="https://github.com/mdhujefa02/LoginRegisterSystem" target="_blank" class="btn btn-primary">View on GitHub</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Login System -->
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="card h-100">
-                        <img src="Login.png" class="card-img-top" alt="Login System">
-                        <div class="card-body">
-                            <h5 class="card-title">Login and Registration System using JDBC</h5>
-                            <p class="card-text">A robust login & registration system with servlet-based architecture to handle user requests.</p>
-                            <p><strong>Technologies:</strong> HTML, CSS, JSP, Servlet, SQL, JDBC, Java</p>
-                        </div>
-                        <div class="card-footer">
-                            <a href="https://github.com/mdhujefa02/Login-And-Registration-System" target="_blank" class="btn btn-primary">View on GitHub</a>
-                        </div>
-                    </div>
-                </div>
-                
-                  <!-- Product Management System -->
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="card h-100">
-                        <img src="Product.png" class="card-img-top" alt="Product Management System">
-                        <div class="card-body">
-                            <h5 class="card-title">Product Management System</h5>
-                            <p class="card-text">A Spring Boot application for managing products with CRUD operations and database integration.</p>
-                            <p><strong>Technologies:</strong> Java, Spring Boot</p>
-                        </div>
-                        <div class="card-footer">
-                            <a href="https://github.com/mdhujefa02/ProductManagenmentSystemSpringBoot" target="_blank" class="btn btn-primary">View on GitHub</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Book Management System -->
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="card h-100">
-                        <img src="Book.png" class="card-img-top" alt="Book Management System">
-                        <div class="card-body">
-                            <h5 class="card-title">Book Management System</h5>
-                            <p class="card-text">A comprehensive system for managing boot-related products built with Spring Boot framework.</p>
-                            <p><strong>Technologies:</strong> Java, Spring Boot</p>
-                        </div>
-                        <div class="card-footer">
-                            <a href="https://github.com/mdhujefa02/BookManagementSystemSpringBoot" target="_blank" class="btn btn-primary">View on GitHub</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Flappy Bird -->
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="card h-100">
-                        <img src="FlappyBird.png" class="card-img-top" alt="Flappy Bird Game">
-                        <div class="card-body">
-                            <h5 class="card-title">Flappy Bird Game</h5>
-                            <p class="card-text">A Java implementation of the popular Flappy Bird game with custom features and gameplay.</p>
-                            <p><strong>Technologies:</strong> Java</p>
-                        </div>
-                        <div class="card-footer">
-                            <a href="https://github.com/mdhujefa02/FlappyBird" target="_blank" class="btn btn-primary">View on GitHub</a>
+                        <div class="card-footer bg-transparent">
+                            <a href="https://github.com/mdhujefa02/LoginRegisterSystem" target="_blank" class="btn btn-gradient w-100">View on GitHub</a>
                         </div>
                     </div>
                 </div>
@@ -299,31 +750,39 @@
     </section>
 
     <!-- Education Section -->
-    <section id="education" class="py-5">
+    <section id="education" class="py-5 skills-section">
         <div class="container">
-            <h2 class="text-center mb-5">Education & Achievements</h2>
+            <h2 class="section-title" data-aos="fade-up">Education & Achievements</h2>
             <div class="row">
-                <div class="col-lg-6">
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h5 class="card-title">Bachelor of Engineering (B.E.)</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">Electronic & Communication Engineering</h6>
+                <div class="col-lg-6" data-aos="fade-right" data-aos-delay="100">
+                    <div class="enhanced-card mb-4">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="fas fa-graduation-cap skill-icon me-3"></i>
+                                <div>
+                                    <h5 class="card-title mb-0">Bachelor of Engineering (B.E.)</h5>
+                                    <h6 class="card-subtitle text-muted">Electronic & Communication Engineering</h6>
+                                </div>
+                            </div>
                             <p class="card-text">RGPV University Bhopal, Madhya Pradesh</p>
                             <p class="card-text"><strong>CGPA:</strong> 7.58</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Academic Achievements</h5>
-                            <ul>
-                                <li>Graduated with First Division Honors</li>
-                                <li>Developed unique and innovative coding projects</li>
-                                <li>Successfully collaborated on group projects</li>
-                                <li>Led teams for major and minor project initiatives</li>
-                                <li>Achieved project milestones ahead of schedule</li>
-                                <li>Captained a cricket team to the finals</li>
+                <div class="col-lg-6" data-aos="fade-left" data-aos-delay="200">
+                    <div class="enhanced-card">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="fas fa-trophy skill-icon me-3"></i>
+                                <h5 class="card-title mb-0">Academic Achievements</h5>
+                            </div>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="fas fa-star text-warning me-2"></i>Graduated with First Division Honors</li>
+                                <li class="mb-2"><i class="fas fa-lightbulb text-info me-2"></i>Developed unique and innovative coding projects</li>
+                                <li class="mb-2"><i class="fas fa-users text-success me-2"></i>Successfully collaborated on group projects</li>
+                                <li class="mb-2"><i class="fas fa-user-tie text-primary me-2"></i>Led teams for major and minor project initiatives</li>
+                                <li class="mb-2"><i class="fas fa-clock text-danger me-2"></i>Achieved project milestones ahead of schedule</li>
+                                <li class="mb-2"><i class="fas fa-medal text-warning me-2"></i>Captained a cricket team to the finals</li>
                             </ul>
                         </div>
                     </div>
@@ -333,68 +792,203 @@
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="py-5 bg-light">
+    <section id="contact" class="py-5">
         <div class="container">
-            <h2 class="text-center mb-5">Contact Me</h2>
+            <h2 class="section-title" data-aos="fade-up">Contact Me</h2>
             <div class="row">
-                <div class="col-lg-6">
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h5 class="card-title">Personal Details</h5>
+                <div class="col-lg-6" data-aos="fade-right" data-aos-delay="100">
+                    <div class="enhanced-card mb-4">
+                        <div class="card-body p-4">
+                            <h5 class="card-title mb-4">Personal Details</h5>
                             <ul class="list-unstyled">
-                                <li><i class="fas fa-birthday-cake me-2"></i> <strong>Date of Birth:</strong> 28th July 2002</li>
-                                <li><i class="fas fa-language me-2"></i> <strong>Languages Known:</strong> English, Hindi</li>
-                                <li><i class="fas fa-map-marker-alt me-2"></i> <strong>Address:</strong> Pune, Maharashtra</li>
+                                <li class="mb-3"><i class="fas fa-birthday-cake me-3 text-primary"></i> <strong>Date of Birth:</strong> 28th July 2002</li>
+                                <li class="mb-3"><i class="fas fa-language me-3 text-success"></i> <strong>Languages Known:</strong> English, Hindi</li>
+                                <li class="mb-3"><i class="fas fa-map-marker-alt me-3 text-danger"></i> <strong>Address:</strong> Pune, Maharashtra</li>
                             </ul>
                         </div>
                     </div>
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Get In Touch</h5>
+                    <div class="enhanced-card">
+                        <div class="card-body p-4">
+                            <h5 class="card-title mb-4">Get In Touch</h5>
                             <ul class="list-unstyled">
-                                <li><i class="fas fa-envelope me-2"></i> <strong>Email:</strong> md.hujefa123@gmail.com</li>
-                                <li><i class="fas fa-phone me-2"></i> <strong>Phone:</strong> +91 9644846081</li>
-                                <li><i class="fab fa-linkedin me-2"></i> <strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/hujefa-saudagar-fullstackjavadeveloper" target="_blank">Hujefa Saudagar</a></li>
-                                <li><i class="fab fa-github me-2"></i> <strong>GitHub:</strong> <a href="https://github.com/mdhujefa02" target="_blank">Github Link</a></li>
+                                <li class="mb-3"><i class="fas fa-envelope me-3 text-primary"></i> <strong>Email:</strong> md.hujefa123@gmail.com</li>
+                                <li class="mb-3"><i class="fas fa-phone me-3 text-success"></i> <strong>Phone:</strong> +91 9644846081</li>
+                                <li class="mb-3"><i class="fab fa-linkedin me-3 text-info"></i> <strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/hujefa-saudagar-fullstackjavadeveloper" target="_blank">Hujefa Saudagar</a></li>
+                                <li class="mb-3"><i class="fab fa-github me-3 text-dark"></i> <strong>GitHub:</strong> <a href="https://github.com/mdhujefa02" target="_blank">Github Link</a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                    <form id="contactForm">
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Name</label>
-                            <input type="text" class="form-control" id="name" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="subject" class="form-label">Subject</label>
-                            <input type="text" class="form-control" id="subject" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="message" class="form-label">Message</label>
-                            <textarea class="form-control" id="message" rows="5" required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Send Message</button>
-                    </form>
+                <div class="col-lg-6" data-aos="fade-left" data-aos-delay="200">
+                    <div class="contact-form">
+                        <h5 class="mb-4">Send Message</h5>
+                        <form id="contactForm">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="subject" class="form-label">Subject</label>
+                                <input type="text" class="form-control" id="subject" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="message" class="form-label">Message</label>
+                                <textarea class="form-control" id="message" rows="5" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-gradient w-100">Send Message</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="py-4 bg-dark text-white">
-        <div class="container text-center">
-            <p class="mb-0">&copy; 2025 Hujefa Saudagar. All rights reserved.</p>
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <p class="mb-3">&copy; 2025 Hujefa Saudagar. All rights reserved.</p>
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/in/hujefa-saudagar-fullstackjavadeveloper" target="_blank" class="me-3">
+                            <i class="fab fa-linkedin fa-2x"></i>
+                        </a>
+                        <a href="https://github.com/mdhujefa02" target="_blank" class="me-3">
+                            <i class="fab fa-github fa-2x"></i>
+                        </a>
+                        <a href="mailto:md.hujefa123@gmail.com" class="me-3">
+                            <i class="fas fa-envelope fa-2x"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </footer>
 
+    <!-- Scroll to Top Button -->
+    <button class="scroll-top" id="scrollTop">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Custom JS -->
-    <script src="script.js"></script>
+    <!-- AOS Animation Library -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 1000,
+            once: true,
+            offset: 100
+        });
+
+        // Loading screen
+        window.addEventListener('load', function() {
+            const loader = document.getElementById('loader');
+            setTimeout(() => {
+                loader.classList.add('fade-out');
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                }, 500);
+            }, 1000);
+        });
+
+        // Scroll to top button
+        const scrollTopBtn = document.getElementById('scrollTop');
+        
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 300) {
+                scrollTopBtn.classList.add('show');
+            } else {
+                scrollTopBtn.classList.remove('show');
+            }
+        });
+
+        scrollTopBtn.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Typing animation
+        const typingText = document.querySelector('.typing-animation');
+        const texts = ['with AI-ML', 'Problem Solver', 'Tech Enthusiast'];
+        let textIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+
+        function typeWriter() {
+            const currentText = texts[textIndex];
+            
+            if (isDeleting) {
+                typingText.textContent = currentText.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typingText.textContent = currentText.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            if (!isDeleting && charIndex === currentText.length) {
+                setTimeout(() => isDeleting = true, 2000);
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                textIndex = (textIndex + 1) % texts.length;
+            }
+
+            setTimeout(typeWriter, isDeleting ? 50 : 100);
+        }
+
+        // Start typing animation after page load
+        setTimeout(typeWriter, 2000);
+
+        // Contact form submission
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Simple form validation and submission feedback
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
+            
+            if (name && email && subject && message) {
+                alert('Thank you for your message! I will get back to you soon.');
+                this.reset();
+            } else {
+                alert('Please fill in all fields.');
+            }
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add parallax effect to hero section
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelector('.hero-section');
+            const speed = scrolled * 0.5;
+            
+            if (parallax) {
+                parallax.style.transform = `translateY(${speed}px)`;
+            }
+        });
+    </script>
 </body>
 </html>
